@@ -1,0 +1,13 @@
+{
+  "name": "WaDash From NexfgenHub",
+  "version": "1.0.0",
+  "description": "No desc",
+  "main": "./index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^5.0.0",
+    "express": "^4.18.2"
+  }
+}

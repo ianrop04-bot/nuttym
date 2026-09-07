@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NexFgen TECH | NEXTEL-PRODUCTS</title>
+</head>
+<style>
+  *{
+    padding:0;
+    margin:0;
+  }
+  body{
+    color:#0BDBFF;
+    background:#19191B;
+  }
+  h2{
+    font-family: 'Rajdhani', monospace;
+    color:#00F7FF;
+  }
+  header h2{
+    color:#036BFF;
+  }
+  header{
+    color:#036BFF;
+    padding:10px 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width:100%;
+    position:fixed;
+    box-shadow:0px 0px 5px;
+    z-index:888;
+    background: #2A2727;
+    padding:bottom:10px;
+  }
+  p{
+    color:gray;
+  }
+  .hero{
+    padding:20px;
+    border-radius:15px;
+  }
+  .grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+h5{
+  color:#008FFF;
+  padding:1rem;
+}
+    .grid div {
+      background: #2D2B2A;
+      z-index: 10;
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      border-radius: 15px;
+      padding:20px;
+      margin: 10px;
+      box-shadow: 
+        5px 5px 20px rgba(0, 0, 0, 0.5),
+         10px 10px 1px rgba(0, 255, 255, 0.1) inset,
+        10px 10px 20px rgba(0, 150, 255, 0.2);
+      transform: translateY(0);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+    .grid div:hover{
+      transform:translateY(-5px);
+      border:1px solid#009EFF;
+      box-shadow:none;
+    }
+h3{
+  font-size:26px;
+  color:#009EFF;
+}
+    .sec div::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent, #00CAFF,
+        transparent
+      );
+      transform: rotate(45deg);
+      animation: shine 6s infinite;
+    }
+    
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }button{
+  padding:10px;
+  margin:10px;
+  text-align:center;
+  font-size:10px;
+  font-weight:700;
+  color:white;
+  background:#004CFF;
+  border-radius:15px;
+  border:none;
+  animation:plsu 2s infinite;
+}
+h1{
+  background:linear-gradient(#00BCFF,#0088FF);
+  background-clip:text;
+  -webkit-text-fill-color: transparent;
+}
+    @keyframes plsu {
+      0% { box-shadow: 0 0 0 0 rgba(0, 200, 255, 0.7); }
+      70% { box-shadow: 0 0 0 20px rgba(0, 200, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 200, 255, 0); }
+    }
+</style>
+<body>
+  <header>
+    <h2>Nextel-Tech</h2>
+  </header>
+  <hr />
+  <br />
+  <br>
+  <br />
+  <section class="hero">
+   <h2>USE PRODUCTS WITH EASE NO STRUGGLE</h2>
+   <p>-Protectful, - friendlyGuidance , -easyunderstanding</p>
+   <button onclick="window.open('https://whatsapp.com/channel/0029Vb71mgIElaglZCU0je0x')">Stay With Us On Track</button>
+  </section>
+<br>
+  <hr />
+  <h3>Global service</h3><br />
+  <div class="grid">
+    <div class="grid-item">
+      <h1>🛡️</h1>
+      <h4>Security</h4>
+    </div>
+    <div>
+      <h1>💡</h1>
+      <h4>Hosting</h4>
+    </div>
+    <div>
+      <h1>🚀</h1>
+      <h4>Developing</h4>
+    </div>
+    <div>
+      <h1>🏗️</h1>
+      <h4>Building</h4>
+    </div>
+  </div>
+  <br />
+  <hr />
+  <h3>Products</h3>
+  <br />
+  <div class="grid">
+    <div>
+      <strong>Spiderman-Md</strong>
+      <p>Automated WhatsApp thechnology bot to help and Guide Users</p>
+      <h5 onclick="window.open('/wabot')">pair now →</h5>
+    </div>
+    <div>
+      <strong>Github Repo Finder</strong>
+      <p>Find User,Any Repo and finds info</p>
+      <h5 onclick="window.open('/git')">Find Now →</h5>
+    </div>
+    <div>
+      <h4>Nextel-ALTECH AI</h4>
+      <p>A helping AI assistance ,Guiding,Friendly, Security AI </p>
+      <h5 onclick="window.open('/altechai')">Start chatting →</h5>
+    </div>
+  </div>
+  <hr />
+  <footer>
+    <p>Dashboard built from Nexfgen ALTECH team</p>
+    <p>Developed By FK</p>
+    <p>Powered By I∆N-RØP</p>
+    <p>Contact : <a href="https://wa.me254707933586">IANROP</a> </p>
+  </footer>
+</body>
+
+</html>

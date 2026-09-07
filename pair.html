@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpiderMan-MD</title>
+</head>
+<style>
+  *{
+    padding:0;
+    margin:0;
+  }
+  body{
+    background-image:url("FB_IMG_17882020425887148.jpg");
+    background-size:350px 490px;
+    color:white;
+  }
+  header{
+    background:#0C0C0D;
+    color:red;
+    display:flex;
+    padding:15px;
+    border-bottom:2px solid red;
+  }
+  header button{
+    position: absolute;
+    top:15px;
+    padding:10px;
+    background:#FF0000;
+    border :none;
+    color:#FFFFFF;
+    border-radius:10px;
+    right:10px;
+  }
+  .div{
+    position:absolute;
+    padding:40px;
+    left:40px;
+    border-radius:15px;
+    border:1px solid #0080FF;
+    background:#0080FF2B;
+    backdrop-filter:blur(10px);
+    top:180px;
+  }
+  .button{
+    padding:20px;
+    font-weight:700;
+    background:#FF0000;
+    border :none;
+    width:70%;
+    margin:10px;
+    color:#FFFFFF;
+    border-radius:20px;
+  }
+  input{
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    outline-color:#0080FF;
+  }
+</style>
+<body>
+  <header>
+    <h2>SPIDERMAN-MD</h2>
+    <button onclick="window.open('https://whatsapp.com/channel/0029Vb71mgIElaglZCU0je0x')">Follow Us</button>
+  </header>
+  <div class="div">
+    <h5 >← Home</h5>
+    <h3>Connect Wa-Bot Now</h3>
+    <p>Enter WhatsAppnumber</p>
+    <input type="number"placeholder="2547......
+    " id="phone"><br />
+    <button class="button"onclick="sendReq()">SEND CODE</button>
+    <div id="code">
+      <h4>Click to copy</h4>
+      <h1 id="pair">---- ----</h1>
+    </div>
+  </div>
+  <script>
+let pair = document.getElementById('pair');
+
+function sendReq() {
+  const phone = document.getElementById('phone').value.trim();
+  
+  if (!phone) {
+    pair.textContent = 'Enter phone number first';
+    return;
+  }
+
+  pair.textContent = 'Generating...';
+
+  fetch(`https//cors-anywhere.herokuapp.com/https://node53.lunes.host:3016/create/pair?phone=${phone}`)
+    .then(res => res.json())
+    .then(data => {
+      pair.textContent = data.code;
+    })
+    .catch(err => {
+      pair.textContent = 'Error generating code';
+      console.error(err);
+    });
+}
+
+pair.addEventListener('click', function() {
+  let text = pair.textContent;
+  
+  if (!text || text === 'Generating...') return;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const original = pair.textContent;
+    pair.innerHTML = '<h5 style="color:lightgreen">Copied</h5>';
+    
+    setTimeout(() => {
+      pair.textContent = original;
+    }, 2000);
+  });
+});
+  </script>
+</body>
+</html>

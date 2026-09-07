@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GitHub Profile Viewer</title>
+<meta name="description" content="Search and view GitHub profiles, repositories, and stats instantly.">
+</head>
+<style>
+    body{
+    background:#1A1E26;
+    color:gray;
+  }
+  .card{
+      background: rgba(10, 25, 45, 0.3);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(0, 200, 255, 0.3);
+      border-radius: 15px;
+      padding:20px;
+      margin: 10px;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 0 0 1px rgba(0, 255, 255, 0.1) inset,
+        0 0 40px rgba(0, 150, 255, 0.2);
+      transform: translateY(0);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(0, 255, 255, 0.1),
+        transparent
+      );
+      transform: rotate(45deg);
+      animation: shine 6s infinite;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+input,textarea{
+  padding:10px;
+  margin:10px;
+  border-radius:10px;
+  border:1px solid #005BFF;
+  outline-color:#005BFF;
+}
+h2{
+  background:linear-gradient(80deg,#00A5FF,#005BFF);
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-family:'Orbitron', monospace ;
+  font-weight:700;
+}
+.button{
+  padding:20px;
+  margin:10px;
+  border-radius:15px;
+  border:none;
+  font-family:'Orbitron', monospace;
+  font-size:17px;
+  font-weight:700;
+  background:linear-gradient(80deg,#00A5FF,#005BFF);
+  animation:plsu 2s infinite;
+}
+ @keyframes plsu {
+      0% { box-shadow: 0 0 0 0 rgba(0, 200, 255, 0.7); }
+      70% { box-shadow: 0 0 0 20px rgba(0, 200, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 200, 255, 0); }
+    }
+    h4{
+      color:#00A5FF;
+    }
+    button{ 
+ padding:20px;
+  margin:10px;
+  border-radius:15px;
+  border:none;
+  font-family:'JetBrains Mono', monospace;font-size:17px;
+  font-weight:700;
+  color:white;
+  background:linear-gradient(80deg,#00A5FF,#005BFF);
+        
+    }
+</style>
+<body>
+<div class="card">
+    <h4 onclick="window.open('/')">← Home</h4>
+<h2>🐙 GitHub Profile Viewer</h2>
+<p>Search any GitHub user and see their profile, repos, and stats</p>
+
+<input type="text" id="username" placeholder="Enter GitHub username..." size="30">
+<button onclick="searchUser()"class="button">Search</button>
+<button onclick="searchRepos()"class="button">View Repos</button>
+
+<hr>
+
+<div id="result"></div>
+</div>
+<script>
+
+function searchUser() {
+    var username = document.getElementById('username').value.trim();
+    if (!username) {
+        alert('Enter a GitHub username');
+        return;
+    }
+    
+    var resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '<p>Loading...</p>';
+    
+    fetch('https://api.github.com/users/' + username)
+    .then(function(response) {
+        if (!response.ok) {
+            throw new Error('User not found');
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        var html = '';
+        html += '<img src="' + data.avatar_url + '" width="100" style="border-radius:50%;">';
+        html += '<h2>' + (data.name || data.login) + '</h2>';
+        html += '<p><b>@' + data.login + '</b></p>';
+        if (data.bio) html += '<p>' + data.bio + '</p>';
+        if (data.company) html += '<p>🏢 ' + data.company + '</p>';
+        if (data.location) html += '<p>📍 ' + data.location + '</p>';
+        if (data.blog) html += '<p>🔗 <a href="' + data.blog + '" target="_blank">' + data.blog + '</a></p>';
+        if (data.twitter_username) html += '<p>🐦 <a href="https://twitter.com/' + data.twitter_username + '" target="_blank">@' + data.twitter_username + '</a></p>';
+        
+        html += '<hr>';
+        html += '<p>📦 <b>' + data.public_repos + '</b> Public Repos | 👥 <b>' + data.followers + '</b> Followers | Following <b>' + data.following + '</b></p>';
+        html += '<p>📅 Joined: ' + new Date(data.created_at).toLocaleDateString() + '</p>';
+        html += '<p>🔗 <a href="' + data.html_url + '" target="_blank">View on GitHub</a></p>';
+        
+        resultDiv.innerHTML = html;
+        
+        // Auto-load repos
+        document.getElementById('username').value = username;
+        loadRepos(username);
+    })
+    .catch(function(error) {
+        document.getElementById('result').innerHTML = '<p style="color:red;">❌ User not found. Check the username.</p>';
+    });
+}
+
+function searchRepos() {
+    var username = document.getElementById('username').value.trim();
+    if (!username) {
+        alert('Enter a GitHub username first');
+        return;
+    }
+    loadRepos(username);
+}
+
+function loadRepos(username) {
+    var resultDiv = document.getElementById('result');
+    resultDiv.innerHTML += '<h3>📁 Repositories:</h3><div id="repoList"><p>Loading repos...</p></div>';
+    
+    fetch('https://api.github.com/users/' + username + '/repos?sort=stars&per_page=20')
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(repos) {
+        var repoDiv = document.getElementById('repoList');
+        
+        if (repos.length === 0) {
+            repoDiv.innerHTML = '<p>No public repositories</p>';
+            return;
+        }
+        
+        var html = '';
+        for (var i = 0; i < repos.length; i++) {
+            var repo = repos[i];
+            html += '<div style="border:1px solid #ddd;padding:10px;margin:5px 0;">';
+            html += '<b><a href="' + repo.html_url + '" target="_blank">' + repo.name + '</a></b>';
+            if (repo.fork) html += ' 🍴 (fork)';
+            html += '<br>';
+            if (repo.description) html += repo.description + '<br>';
+            html += '⭐ ' + repo.stargazers_count + ' | 🍴 ' + repo.forks_count + ' | 👁 ' + repo.watchers_count;
+            if (repo.language) html += ' | 🔵 ' + repo.language;
+            html += ' | 📅 ' + new Date(repo.updated_at).toLocaleDateString();
+            html += '</div>';
+        }
+        
+        repoDiv.innerHTML = html;
+    })
+    .catch(function() {
+        document.getElementById('repoList').innerHTML = '<p style="color:red;">Error loading repos</p>';
+    });
+}
+
+// Search on Enter key
+document.getElementById('username').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchUser();
+    }
+});
+
+// Quick examples
+document.getElementById('result').innerHTML = '<p><b>Try these usernames:</b></p>' +
+    '<button onclick="document.getElementById(\'username\').value=\'torvalds\';searchUser();">torvalds</button> ' +
+    '<button onclick="document.getElementById(\'username\').value=\'mojombo\';searchUser();">mojombo</button> ' +
+    '<button onclick="document.getElementById(\'username\').value=\'gaearon\';searchUser();">gaearon</button> ' +
+    '<button onclick="document.getElementById(\'username\').value=\'addyosmani\';searchUser();">addyosmani</button>';
+</script>
+
+</body>
+</html>

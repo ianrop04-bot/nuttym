@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEXTEL / ALTECH AI</title>
+  <style>
+    *{ padding:0; margin:0; box-sizing: border-box; }
+    body{ background:#141618; color:gray; font-family: system-ui; padding-bottom: 120px; }
+    header{ background:#2B3034; color:#0088FF; position:fixed; top:0; padding:10px; width:100%; box-shadow:2px 2px 5px #0088FF; z-index: 10; }
+    h3{ color:#0088FF; text-align:center; margin-top: 60px; }
+    .chat-container{ width:100%; padding: 20px; display:flex; flex-direction: column; gap: 15px; }
+    .input{ padding:10px; position:fixed; bottom:0; left:0; right:0; background:#3D3230; border-radius:15px 15px 0 0; text-align:center; }
+    textarea{ padding:10px; color:white; width:70%; background:#403735; border:none; border-radius:15px; outline:none; resize:none; }
+    .msgai{ background:#403735; color:white; border-radius:15px; padding:15px; max-width:80%; align-self: flex-start; }
+    .msguser{ background:#0088FF; color:white; padding:15px; max-width:80%; align-self: flex-end; border-radius:20px; border-top-right-radius:4px; }
+    button{ padding:10px 18px; color:white; border-radius:40px; background:#0088FF; border:none; cursor:pointer; }
+    .input div{ display:flex; gap:10px; justify-content:center; align-items:center; }
+    .h5{color:#009EFF;}
+  </style>
+</head>
+<body>
+  <header>
+    <h2>NEXTEL-TECH</h2>
+  </header>
+  <h5 onclick="window.open('/')">←Home</h5>
+  <h3>NEXTEL ALTECH AI</h3>
+  <p style="text-align:center;">Chat is friendly and expert</p>
+
+  <div class="chat-container" id="container"></div>
+
+  <div class="input">
+    <div>
+      <textarea placeholder="Type A message" id="text" rows="2" cols="30"></textarea>
+      <button onclick="send()">Send</button>
+    </div>
+  
+  </div>
+
+<script>
+const API_KEY = 'AIzaSyBH1u2CHBvoos1C2F8c6lKuCXauIubnluM'; 
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+
+
+const container = document.getElementById('container');
+
+function sendmsg(user, text){
+  const msg = document.createElement('div');
+  msg.innerHTML = text; 
+  msg.className = `msg${user}`;
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
+}
+
+sendmsg('ai','Hi, How may I help You? 🤖');
+
+async function send(){
+  let inputEl = document.getElementById('text');
+  let input = inputEl.value.trim();
+  if (!input) { 
+    alert('please insert text'); 
+    return; 
+  }
+  
+  sendmsg('user', input);
+  inputEl.value = ''; 
+
+  sendmsg('ai', '...'); 
+  const aiReply = await loadcontent(input);
+  container.lastChild.innerHTML = aiReply; 
+}
+
+async function loadcontent(text){
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ 
+            text: `Act as if You are ALTECH AI from company of NexFgen Hub powered By IanRop And Nexfgen Teams. 
+            If user asks who you are, don't say you are Gemini from Google. 
+            Be expert and friendly with emojis. Teach cybersecurity,Cooding,Hosting guidance,Conversation and solve school problems. 
+            Use simple HTML tags like <b> <br> but no markdown like \`\`\`
+            User: ${text}` 
+          }]
+        }]
+      })
+    });
+    const data = await res.json();
+    const aiText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "❌ No response.";
+    return aiText;
+  } catch (error) {
+    console.log(error.message);
+    return "❌ Error: " + error.message;
+  }
+}
+</script>
+</body>
+</html>
