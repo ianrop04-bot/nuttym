@@ -12,7 +12,7 @@
     margin:0;
   }
   body{
-    background-image:url("FB_IMG_17882020425887148.jpg");
+    background-image:url("./FB_IMG_17882020425887148.jpg");
     background-size:350px 490px;
     color:white;
   }
@@ -90,13 +90,13 @@ function sendReq() {
 
   pair.textContent = 'Generating...';
 
-  fetch(`https//cors-anywhere.herokuapp.com/https://node53.lunes.host:3016/create/pair?phone=${phone}`)
+  fetch(`https//cors-anywhere.herokuapp.com/http://node53.lunes.host:3016/create/pair?phone=${phone}`)
     .then(res => res.json())
     .then(data => {
       pair.textContent = data.code;
     })
     .catch(err => {
-      pair.textContent = 'Error generating code';
+      pair.textContent = err.message;
       console.error(err);
     });
 }
