@@ -80,7 +80,7 @@
   <script>
 let pair = document.getElementById('pair');
 
-function sendReq() {
+async function sendReq() {
   const phone = document.getElementById('phone').value.trim();
   
   if (!phone) {
@@ -88,17 +88,14 @@ function sendReq() {
     return;
   }
 
-  pair.textContent = 'Generating...';
-
-  fetch(`https//cors-anywhere.herokuapp.com/http://node53.lunes.host:3016/create/pair?phone=${phone}`)
-    .then(res => res.json())
-    .then(data => {
-      pair.textContent = data.code;
-    })
-    .catch(err => {
-      pair.textContent = err.message;
-      console.error(err);
-    });
+  pair.textContent = 'Generating...`
+    try{
+    const response = await fetch(`https//cors-anywhere.herokuapp.com/http://node53.lunes.host:3016/create/pair?phone=${phone}`)
+    const data = response.json()
+    pair.textContent= `${data.code}`
+  }catch(e){
+    pair.textContent= e.message
+  }
 }
 
 pair.addEventListener('click', function() {
