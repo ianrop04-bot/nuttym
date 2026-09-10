@@ -81,6 +81,7 @@
 let pair = document.getElementById('pair');
 
 async function sendReq() {
+  try{
   const phone = document.getElementById('phone').value.trim();
   
   if (!phone) {
@@ -89,7 +90,7 @@ async function sendReq() {
   }
 
   pair.textContent = 'Generating...`
-    try{
+  
     const response = await fetch(`https//cors-anywhere.herokuapp.com/http://node53.lunes.host:3016/create/pair?phone=${phone}`)
     const data = response.json()
     pair.textContent= `${data.code}`
