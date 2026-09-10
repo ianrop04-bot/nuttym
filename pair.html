@@ -104,7 +104,7 @@ function sendReq() {
 pair.addEventListener('click', function() {
   let text = pair.textContent;
   
-  if (!text || text === 'Generating...') return;
+  
 
   navigator.clipboard.writeText(text).then(() => {
     const original = pair.textContent;
